@@ -1,0 +1,86 @@
+= Deploy and Scale a Spring Boot App
+
+== Goal
+
+Deploy a Spring Boot app, scale it and check its logs.
+
+Approximate time: 30 minutes
+
+== Prerequisites
+. https://maven.apache.org/[Installation of Maven]
+. Installation and experience with https://git-scm.com/[git] and https://github.com/[github]
+. Experience with https://spring.io/[Spring]
+
+== Application Description
+. Hotels Restful API - serves up hotel names from a relational database
+. Uses:
+** link:http://projects.spring.io/spring-boot/[Spring Boot]
+** link:http://projects.spring.io/spring-data-rest/[Spring Data Rest]
+** http://www.h2database.com/html/main.html[H2] Embedded database unless bound to PWS/PCF relational service
+
+== Exercises
+
+=== Push a Spring Boot app
+
+. In the CLI, make sure you are targeting your PWS/PCF installation and development space.
+
+. Using git, clone the the following repository into your work directory.  Consider using your home directory.
+[source,bash]
+----
+$ cd ~
+$ git clone https://github.com/pivotal-enablement/hotels.git
+----
+[start=4]
+. Package the application with Maven
+[source,bash]
+----
+$ mvn package
+----
+
+
+[start=5]
+. Run cf push to deploy the application.
+[source,bash]
+----
+$ cf push hotels -p target/hotels-0.0.1-SNAPSHOT.jar --random-route
+----
+
+Use the `random-route` attribute to create a URL that includes the app name and random words. Use this attribute to avoid URL collision when pushing the same app to multiple spaces, or to avoid managing app URLs.
+
+. Use the CLI to verify that your app is now in the development space.
+
+. View the app in the Apps Manager.
+
+. View the execution of the app in a browser (the link is in Apps Manager) or using curl.
+
+Endpoint: `http://{application-hostname}/hotels`
+
+Your browser will need support to display JSON documents.  *Recommendation:* link:https://www.google.com/chrome/browser/desktop/[Chrome] with the link:https://chrome.google.com/webstore/detail/json-formatter/bcjindcccaagfpapjjmafapmmgkkhgoa?hl=en[JSON Formatter Extension].
+
+Review the DataSource configuration at:
+Endpoint: `http://{application-hostname}/configprops`
+
+Note that it is using the embedded H2 database.
+
+Review the environment details at:
+Endpoint: `http://{application-hostname}/env`
+
+
+=== Scale the app
+
+. Using App Manager, increase the number of instances for the `hotels` app to 2. Notice how quick this is, since the droplet just needs to be copied to a new container and the staging process is not performed.
+
+Refresh the environment url multiple times:
+Endpoint: `http://{application-hostname}/env`
+
+Note that the values are changing such as `vcap.application.instance_index`.  This is because your requests are being load balanced across multiple instances.
+
+. Using the CLI, decrease the number of instances for your app back to 1.
+
+=== View logs and events for the app
+
+. In Apps Manager, select your application and view the logs and events.
+
+. Using the CLI, tail the logs for your app.
+
+. Refresh your browser for the app to generate a log entry. Use CTRL C to stop the tailing.

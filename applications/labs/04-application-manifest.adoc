@@ -1,0 +1,20 @@
+= Use an Application Manifest
+
+== Goal
+
+Run cf push with an application manifest in your application directory, setting the memory limit to 128M.
+
+Approximate time: 10 minutes
+
+== Exercises
+
+=== Create a deployment manifest
+
+. Create an application manifest for your simple application. Set the maximum memory to 128M.
+
+. Run cf push and verify that the manifest settings are working.
+
+=== Check this out
+
+. There's a CF manifest generator online at http://cfmanigen.mybluemix.net/ 
+

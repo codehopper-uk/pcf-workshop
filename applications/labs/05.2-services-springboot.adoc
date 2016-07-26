@@ -1,0 +1,33 @@
+= Provision a Managed Service
+
+== Goal
+
+Provision an instance of a mysql database managed service and connect to it from your Spring Boot application.  This lab is a continuation of the Hotels Restful API application done in prior lab.
+
+Approximate time: 45 minutes
+
+== Exercises
+
+=== Create a MySQL managed service instance
+
+
+. Use App Manager or the CLI to create an instance of the MySQL Database named `hotels-db`.
+. Bind the `hotels-db` to the `hotels` application using the CLI or App Manager.
+. Restage the `hotels` application using the CLI.
+. Verify that the `VCAP_SERVICES` environment variable is readable three ways:
+.. View the variables in the application's Services tab in App Manager.
+.. View the application's environment variables using the CLI.
+.. View the variables in the endpoint `http://{application-hostname}/env` of your application.
+
+
+=== Confirm that the hotels application is using MySQL
+
+Review the DataSource configuration at:
+Endpoint: `http://{application-hostname}/configprops`
+
+Note that it is using the MySQL database.
+
+
+=== How did that happen?
+
+Review Java Buildpack output from staging.  Notice that it has added  `Spring Auto Reconfiguration` to your application.  Review link:https://github.com/cloudfoundry/java-buildpack-auto-reconfiguration[Spring Auto Reconfiguration].

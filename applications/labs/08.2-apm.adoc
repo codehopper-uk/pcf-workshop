@@ -1,0 +1,42 @@
+= Integrating with APM Tools
+
+== Goal
+
+Integrate multiple instances of a running application with a third-party Application Performance Monitoring (APM) tool.
+
+Estimated time: 20 minutes
+
+== Exercise
+
+=== Configure and Use New Relic APM Service
+*Note: Use Pivotal Web Services (PWS) for this exercise, not your own installation.*
+
+. From the PWS Apps Manager, go to the Marketplace and provision a free new New Relic
+service instance. Name the instance anything you would like (suggestion: "new-relic"). Do not bind to an app yet.
+
+. The PHP and Java buildpacks automatically add the New Relic agent if the New Relic service has been bound to the application. Select
+any PHP or Java app deployed to Cloud Foundry from an earlier lab. Verify that it is working.
+
+. Bind your app to the "new-relic" service you just provisioned. Restage the application. *Note: You must restage or push your application. Simply
+restarting it in Apps Manager does not build a new droplet or update environment variables.*
+
+. In the cf push or cf restage output, verify that a New Relic agent was added to the droplet as part of the staging process.
+
+. Scale your app to two instances.
+
+. Once the application starts, open its URL in a browser.  Refresh it several times.
+
+. Return to the PWS Apps Manager.  From the list of services in your application's	space, locate the new-relic service
+and click on the "Manage" link.
+
+. New Relic will use OAuth for authentication, so you will be prompted with a login screen from Pivotal Web
+Services.
+
+. Agree to the New Relic terms of service, or temporarily defer.
+
+. You should now see a page that lists your Cloud Foundry applications (only one should be in the list at
+the moment, the app that you chose to bind to the New Relic service).  Click on this entry to obtain detailed monitoring
+information.  (Note that it may take several moments for detailed logging information to appear.)
+
+Congratulations!  You have successfully bound your application to an APM via a Pivotal Cloud Foundry
+service.  If you have time, investigate the APM's capabilities.

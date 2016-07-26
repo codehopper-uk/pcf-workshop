@@ -1,0 +1,30 @@
+= Logging and Metrics
+
+== Goal
+
+View Elastic Runtime metrics and logs provided in Ops Manager. Send logs for an application to Papertrail using syslog draining.
+
+Estimated time: 20 minutes
+
+== View Elastic Runtime Component Metrics and Logs using Ops Manager
+
+. In Ops Manager, select `Pivotal Elastic Runtime` > `Status`. Review the status information. Notice that this tab provides metrics for Pivotal Elastic Runtime
+components.
+
+. Request the logs for the Router by click on the Logs icon to the far right.
+
+. Download and explore the Router logs from the `Logs` tab. View the access.log in the gorouter directory.
+
+== Configure Syslog Draining for an Application
+
+. Sign up for a free Papertrail account: https://papertrailapp.com/.
+
+. Follow the instructions on link:http://docs.cloudfoundry.org/devguide/services/log-management-thirdparty-svc.html#papertrail[Setting up Papertrail]. Use
+the Heroku links (Cloud Foundry syslog draining is compatible with Heroku).  Create the
+user-provided service and bind it to an existing application.
+
+. Open the Papertrail dashboard and view the logs for your application. In Apps Manager, start and stop the bound application and verify that corresponding
+log entries are made.
+
+Congratulations, you have viewed metrics for Pivotal Elastic Runtime components in Ops Manager and used syslog draining
+to send logs for an application to Papertrail.
