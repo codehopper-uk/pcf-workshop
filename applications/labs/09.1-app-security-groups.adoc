@@ -1,0 +1,68 @@
+= Application Security Groups
+
+== Goal
+
+View and modify Application Security Groups.
+
+Estimated time: 30 minutes
+
+== Exercise
+
+*Note*: You must be logged in as an `admin` to manipulate security groups. Therefore, *PWS can not be used for this lab*.
+
+*Note*: This lab assumes that the Cloud Foundry installation has Pivotal MySQL available in the Marketplace.
+
+=== Reference
+
+. Browse the documentation on link:http://docs.pivotal.io/pivotalcf/adminguide/app-sec-groups.html[Application Security Groups]
+
+=== Establishing a default running policy
+
+In this exercise, you will test the effects of restricting application outbound traffic using Application Security Groups.
+
+. You will need an application that uses the Pivotal MySQL service. If you already have one working in the Cloud Foundry installation
+in which you have admin rights, verify that it is working and continue to the next step. Otherwise, here is what you need to depending on your situation:
+
+* In an earlier Services lab, you bound a PHP application to a database an read a value from the database. If you pushed that app to PWS, you can push
+that same application to the Cloud Foundry installation in which you have admin rights. Remember to bind the service to the app.
+
+* If you have not done the Services lab where you bound a PHP application to a MySQL instance, you will need to do that lab before doing continuing
+with this lab. You want need to push the app to the Cloud Foundry installation where you have admin rights. If needed, ask your instructor for more help.
+
+. Use the cf CLI to view the default Application Security Groups for your Cloud Foundry deployment. Notice that by default there are no outbound restrictions
+for the entire installation. You should see 'all_open' and no Space assigned, meaning it is an Application Security Group that applies to the entire installation.
+
+. Verify that `all_open` Application Security Group applies to staging and running for the installation. Verify this with `cf staging-security-groups` and `cf running-security-groups`.
+
+. Use `cf security-group` to view the JSON in the `all_open` Application Security Group. It should look like this:
+
+....
+[
+  {
+    "destination": "0.0.0.0-255.255.255.255",
+    "protocol": "all"
+  }
+]
+....
+
+[start=5]
+. Use `cf unbind-running-security-group` to unbind the running `all_open` Application Security Group for your installation. *Note, you have just turned off the ability for running applications
+to make requests. If you do not complete this lab, at least perform the last step below to undo this.*
+
+. Verify that `cf running-security-groups` shows no Application Security Groups for applications that are running. This means that running applications
+can not make external requests.
+
+. Restart your app for the changes to take effect.
+
+. Verify that your app can no longer connect to the MySQL service instance. You can also view the local logs for the app to see the effects of this.
+
+. Create an Application Security Group named `mysql` to allow the containers to send outbound traffic to the MySQL instance IP and
+port. You can view the environment variables to obtain the correct information. You will be creating a local JSON file. See `cf help create-security-group` for help.
+
+. Bind your `mysql` Application Security Group to all running applications with `cf bind-running-security-group`. Verify that binding was successful
+with `cf running-security-groups`.
+
+. Restart your app and verify that it can once again connect to the MySQL service instance.
+
+. *Very Important:*  As a final step, re-bind the default `all_open` running Application Security Group for your installation with `cf bind-running-security-group all_open`.  This
+will restore unrestricted access for all your apps.
