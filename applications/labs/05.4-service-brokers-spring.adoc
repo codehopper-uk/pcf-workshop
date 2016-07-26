@@ -1,0 +1,184 @@
+= Service Brokers
+
+== Goal
+
+In this section, students will deploy a custom service broker.
+
+. The `cf-haash-broker` implements a HashMap as a Service
+
+. Deploy the Service Broker as an app to Cloud Foundry
+
+. Register the Broker with the Cloud Controller
+
+. Make the single plan in the catalog “public”
+
+. Create an instance of your service
+
+. Push and bind a test app to your service instance
+
+. Test the app’s interaction with the service
+
+== Exercise
+
+. Review the documentation on link:http://docs.pivotal.io/pivotalcf/services/[Creating Custom Services]
+
+=== Overview
+
+The Service Broker for this lab is for a service called HashMap as a Service (HaaSh). It wraps a minimal
+REST API around a Java HashMap implementation, and each service instance creation event results in a
+newly allocated Map.
+
+The service-broker is in the folder `cf-haash-broker` and a client that will use that service can be
+found in `cf-haash-client`.  The code for both has been written for you, you just have to configure
+and deploy them.
+
+If you are familiar with an IDE like IntelliJ, Eclipse or STS, you may choose to import these projects and use
+the IDE, but these instructions just require the `cf` command-line tool, a Terminal or CMD window and your favorite
+text-editor (on Windows: Notepad or Wordpad will do, on MacOS or Linux: use `vi` if you know it or whatever GUI
+editor you have available).
+
+To use Eclipse or STS, you'll need to install the Gradle plugin first.  You can find it under Help->Eclipse Marketplace,
+then search for Gradle.  The "Gradle Integration for Eclipse 3.7.xxx" by Pivotal works well.
+
+Once the Gradle plugin is installed, you use File->Import->Gradle->Gradle Project, then select the project folder
+to import.  Then click the "Build Model" button, select the project, and click Finish.
+
+
+
+
+=== Prerequisites
+
+If you do not have one already, open a Terminal window (MacOS, Linux) or CMD window (Windows).
+
+If you have not already done so, download the `CloudFoundryStudentFiles` from github.
+
+ * If you have git installed, change to a suitable directory and run
+    `git clone https://github.com/S2EDU/CloudFoundryStudentFiles`
+ * Otherwise, goto https://github.com/S2EDU/CloudFoundryStudentFiles and on the right-hand side click
+    the `Download ZIP` button.  Then unzip in a suitable location.
+
+In your Terminal/CMD window, make `CloudFoundryStudentFiles` your current directory.
+
+The Gradle build tool is required.  If you do not have gradle installed, there is a script in the parent
+directory (`gradlew` or `gradlew.bat`) that loads gradle from the Internet and then runs a build.
+
+=== Configure the Haash Broker
+
+* Change into the `cf-haash-broker` project directory under `CloudFoundryStudentFiles`.
+
+* Edit the `src/main/resources/import.sql` file and replace each occurance of XX with your initials, like this:
++
+[source,bash]
+----
+insert into services (id, name, description, bindable) values ('<first-initial><last-initial>', '<first-initial><last-initial>-HaaSh', 'HaaSh - HashMap as a Service', true)
+insert into plans (id, name, description, service_id) values ('<first-initial><last-initial>', 'basic', 'Basic Plan','<first-initial><last-initial>');
+----
++
+
+* Edit the `cf-haash-broker` dashboard client code, add your initials to the String id field.
+The DashboardClient class is in the src/main/java/io/pivotal/pcf/haash/model folder.
++
+[source,bash]
+----
+public class DashboardClient {
+
+	private final String id = "Haash-XX";
+	private final String redirectURI = "http://example.com";
+	private final String secret = "secret";
+----
+
+* Build the Haash Broker - in the `cf-haash-broker` folder by running `gradle assemble`.
+  - If you do not have Gradle installed use the script mentioned in prerequisites: This script takes a long time
+    to run the first time due to the downloads.  So, in your Terminal/CMD window run `../gradlew assemble` (Linux/MacOS)
+    or `..\gradlew.bat` (Window).
+
+* Push the broker as an app to Cloud Foundry using `cf`
+** Use the name: `<first-initial><last-initial>-haash-broker`
+** The file you need to deploy is `build/libs/haash-broker-0.0.1-SNAPSHOT.jar`.
+
+* Register the broker with the cloud controller.  You must first login as the admin user to run this command, using the
+password from the Elastic Runtime tile in Ops Manager, from the credentials tab for UAA/admin.
++
+[source,bash]
+----
+$ cf create-service-broker ...
+----
++
+For the service broker name, use your initials <first initial><last initial>-broker.
+The username & password you need to create the service broker are in: `src/main/resources/application.properties`
+
+* Next, you need to make the plan public:
++
+[source,bash]
+----
+$ cf enable-service-access ...
+----
++
+You will need to figure out the service and plan names.
+You can do this by running the following command:
++
+[source,bash]
+----
+$ cf service-access
+----
++
+
+
+* Verify you can see your new service in the marketplace.  There is a `cf` command for this.
+
+* Create a new instance of your service using the CF commands.  Name the instance `<first-initial><last-initial>-haash-service`.
+
+=== Running the Haash Client
+
+* Change into the `cf-haash-client` directory.
+
+* There is no need to build the Haash Client application.  It is already built for you and the jar you need to deploy is in the `pre-built` directory.
+
+* Create a manifest for your Haash Client.
+
+* Be sure to bind the Haash Client to the service instance you created above.
+
+* Push the Haash Client to Cloud Foundry and name it: `<first-initial><last-initial>-haash-client`
+
+* To access your client you need to be able to send HTTP GET and PUT requests.
++
+** Use a browser plugin: RESTClient for Firefox or Postman for Chrome.
+There is also a "REST Client" plug-in for Eclipse/STS.
++
+** Command Line: MacOS and Linux users can conveniently do this using `curl` or `wget`.
+Windows users can download `wget.exe` from https://eternallybored.org/misc/wget/.
+
+* Access your haash client to be sure it is working and using your haash-service
++
+** Using `curl`, you can add key,value pairs using:
++
+[source,bash]
+----
+$ curl <your haash-client>/HaaSh/<key> -d '<some value>' -X PUT
+----
++
+** Now retrieve the values:
++
+[source,bash]
+----
+$ curl <your haash-client>/HaaSh/<key>
+----
+
+* Or using wget:
++
+[source,bash]
+----
+$ wget <your haash-client>/HaaSh/<key> --body-data '<some value>' --method PUT
+$ wget <your haash-client>/HaaSh/<key>
+----
+
+
+== Beyond the class
+
+There are many community resources to help you build your own more robust service broker.
+
+* Spring developers can use the link:https://github.com/cloudfoundry-community/spring-boot-cf-service-broker[Spring Boot CF Service Broker]
+
+* You following repositories can be used as a reference:
+** link:https://github.com/cloudfoundry-community/s3-cf-service-broker[S3 CF Service Broker]
+** link:https://github.com/spgreenberg/spring-boot-cf-service-broker-mongo[Spring Boot CF Service Broker Mongo]
