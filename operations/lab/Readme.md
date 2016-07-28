@@ -61,6 +61,13 @@ The Bosh CLI is based on Ruby. So you need to ensure Ruby is installed in your s
 
 ### Using a Ruby Version Manager
 
+* SSH into your jumpbox
+
+	```
+	vagrant ssh jumpbox
+	```
+
+
 * Install [Ruby Version Manager](http://rvm.io/).
 
 	```
@@ -97,20 +104,9 @@ sudo apt-get install ruby
 
 ## [Bosh Lite](https://github.com/cloudfoundry/bosh-lite)
 
-### Install
+### Install Bosh CLI
 
-* Clone repo
-
-	```
-	git clone https://github.com/cloudfoundry/bosh-lite
-	```
-
-* Start Bosh VM
-
-	```
-	cd bosh-lite
-	vagrant up
-	```
+From your ubuntu jumbox.
 
 $ Install bosh-cli
 
@@ -131,6 +127,15 @@ $ Install bosh-cli
 	```
 	sudo gem install bundler --no-document
 	```
+
+### (Optional) Install Cloud Foundry
+
+* Clone bosh-lite repository
+
+	```
+	git clone https://github.com/cloudfoundry/bosh-lite
+	```
+
 
 * Download [spiff](https://github.com/cloudfoundry-incubator/spiff)
 
@@ -185,3 +190,12 @@ Once downloaded unzip it and copy the `spiff` binary to the `/usr/bin` folder.
 
 	> If bosh appears to be running and you are still unable to connect then run `add-route`.
 
+## Inspecting and Deploying a Bosh Release
+
+### Clone Example Bosh Release
+
+Clone the following bosh release.
+
+	```
+	git clone https://github.com/cloudfoundry-community/jenkins-swarm-boshrelease
+	```
