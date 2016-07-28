@@ -141,7 +141,7 @@ $ Install bosh-cli
 	git clone https://github.com/cloudfoundry/bosh-lite
 	```
 
-> Note: If git is not install install it via ```sudo apt-get install git```.
+	> Note: If git is not install install it via ```sudo apt-get install git```.
 
 * Download [spiff](https://github.com/cloudfoundry-incubator/spiff)
 
@@ -206,7 +206,7 @@ Once downloaded unzip it and copy the `spiff` binary to the `/usr/bin` folder.
 	git clone https://github.com/cloudfoundry-community/jenkins-swarm-boshrelease
 	```
 
-> Note: If git is not install install it via ```sudo apt-get install git```.
+	> Note: If git is not install install it via ```sudo apt-get install git```.
 
 
 
