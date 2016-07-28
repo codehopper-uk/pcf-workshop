@@ -76,7 +76,7 @@ The Bosh CLI is based on Ruby. So you need to ensure Ruby is installed in your s
 * Install [Ruby Version Manager](http://rvm.io/).
 
 	```
-	gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+	curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 	\curl -sSL https://get.rvm.io | bash -s stable
 	```
 
@@ -141,6 +141,7 @@ $ Install bosh-cli
 	git clone https://github.com/cloudfoundry/bosh-lite
 	```
 
+> Note: If git is not install install it via ```sudo apt-get install git```.
 
 * Download [spiff](https://github.com/cloudfoundry-incubator/spiff)
 
@@ -201,6 +202,13 @@ Once downloaded unzip it and copy the `spiff` binary to the `/usr/bin` folder.
 
 Clone the following bosh release.
 
+
 	```
 	git clone https://github.com/cloudfoundry-community/jenkins-swarm-boshrelease
 	```
+
+> Note: If git is not install install it via ```sudo apt-get install git```.
+
+
+
+	
