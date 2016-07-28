@@ -200,6 +200,10 @@ Once downloaded unzip it and copy the `spiff` binary to the `/usr/bin` folder.
 
 ### Clone Example Bosh Release
 
+* Review [creating a bosh release](http://bosh.io/docs/create-release.html) documentaton.
+ 
+* Review bosh [jobs](http://bosh.io/docs/jobs.html) and their [lifecycle](http://bosh.io/docs/job-lifecycle.html).
+
 * Clone the following bosh release.
 
 	```
@@ -207,6 +211,8 @@ Once downloaded unzip it and copy the `spiff` binary to the `/usr/bin` folder.
 	```
 
 	> Note: If git is not install install it via ```sudo apt-get install git```.
+	
+* Follow the instructions [here](https://github.com/cloudfoundry-community/jenkins-swarm-boshrelease) to build and deploy the release to your bosh-lite environment.
 
 
 
