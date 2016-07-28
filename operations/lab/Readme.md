@@ -40,6 +40,12 @@ The Bosh-Lite VM will be deployed to a Virtual Box hypervisor using Vagrant. Vag
 
 You will be using the Cloud Foundry CLI to interact with the runtime once it has been provisioned. Unlike the commercial distribution of Pivotal Cloud Foundry bosh-lite does not have an Applications Dashboard and all inspection and interaction with the Cloud Foundry runtime needs to be done through the CLI.
 
+* SSH into your jumpbox
+
+	```
+	vagrant ssh jumpbox
+	```
+
 * Download
 
 	```
@@ -66,7 +72,6 @@ The Bosh CLI is based on Ruby. So you need to ensure Ruby is installed in your s
 	```
 	vagrant ssh jumpbox
 	```
-
 
 * Install [Ruby Version Manager](http://rvm.io/).
 
