@@ -202,10 +202,7 @@ Once downloaded unzip it and copy the `spiff` binary to the `/usr/bin` folder.
 
 Clone the following bosh release.
 
-
-	```
 	git clone https://github.com/cloudfoundry-community/jenkins-swarm-boshrelease
-	```
 
 > Note: If git is not install install it via ```sudo apt-get install git```.
 
